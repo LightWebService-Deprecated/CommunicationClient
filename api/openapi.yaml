@@ -1,0 +1,45 @@
+openapi: 3.0.2
+info:
+  title: LightWebService Authentication Server
+  version: 1.0.0
+servers:
+- description: LWS Individual Web Server
+  url: https://localhost
+tags:
+- description: Account(Register, Edit, Dropout) Related APIs
+  name: Account
+paths:
+  /api/account:
+    post:
+      description: This API will add new account entity and send event message to
+        Kubernetes Server(for creating user-default namespaces)
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterRequest'
+      responses:
+        "200":
+          description: When successfully registered account
+      summary: Register Account
+      tags:
+      - Account
+components:
+  schemas:
+    RegisterRequest:
+      example:
+        userPassword: userPassword
+        userEmail: userEmail
+        userNickName: userNickName
+      properties:
+        userEmail:
+          description: Email Address
+          format: email
+          type: string
+        userNickName:
+          description: User Nickname
+          type: string
+        userPassword:
+          description: User Password
+          type: string
+      type: object
