@@ -10,6 +10,33 @@ tags:
   name: Account
 paths:
   /api/account:
+    get:
+      description: This API will get account information, such as email address and
+        nickname.
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountResponse'
+          description: When successfully got account information.
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: When API Request is not authorized.
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Somehow account information is not found.
+      security:
+      - AccessTokenSecurity: []
+      summary: Get Account Information, Except for password
+      tags:
+      - Account
     post:
       description: This API will add new account entity and send event message to
         Kubernetes Server(for creating user-default namespaces)
@@ -43,3 +70,46 @@ components:
           description: User Password
           type: string
       type: object
+    AccountResponse:
+      example:
+        accountState: accountState
+        nickName: nickName
+        roles:
+        - roles
+        - roles
+        id: id
+        email: email
+      properties:
+        id:
+          description: Account Unique ID
+          type: string
+        email:
+          description: Email Address
+          format: email
+          type: string
+        nickName:
+          description: User Nickname
+          type: string
+        accountState:
+          description: Account State - Created, Ready, Revoked, DroppedOut, Error
+          type: string
+        roles:
+          description: Account roles - like admin, and normal user
+          items:
+            type: string
+          type: array
+      type: object
+    ErrorResponse:
+      properties:
+        message:
+          description: Error Message Title
+          type: string
+        detailMessage:
+          description: Error Message Detail
+          type: string
+      type: object
+  securitySchemes:
+    AccessTokenSecurity:
+      description: LWS Access Token
+      scheme: bearer
+      type: http

@@ -78,17 +78,31 @@ All URIs are relative to *https://localhost*
 
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
+*AccountApi* | [**ApiAccountGet**](docs/AccountApi.md#apiaccountget) | **Get** /api/account | Get Account Information, Except for password
 *AccountApi* | [**ApiAccountPost**](docs/AccountApi.md#apiaccountpost) | **Post** /api/account | Register Account
 
 
 ## Documentation For Models
 
+ - [AccountResponse](docs/AccountResponse.md)
+ - [ErrorResponse](docs/ErrorResponse.md)
  - [RegisterRequest](docs/RegisterRequest.md)
 
 
 ## Documentation For Authorization
 
- Endpoints do not require authorization.
+
+
+### AccessTokenSecurity
+
+- **Type**: HTTP Bearer token authentication
+
+Example
+
+```golang
+auth := context.WithValue(context.Background(), sw.ContextAccessToken, "BEARER_TOKEN_STRING")
+r, err := client.Service.Operation(auth, args)
+```
 
 
 ## Documentation for Utility Methods
